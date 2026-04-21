@@ -1,0 +1,52 @@
+{% extends "TODO/layout.html" %}
+
+{% block title %} Create a new Task {% endblock %}
+
+{% block body %}
+
+    <h2>Add a task</h2>
+    <hr>
+    {% if error %}
+        <div style="color:red;"> <h4>*{{ error }}*</h4> </div>
+    {% endif %}
+
+    <form action="create_task" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" id="Title" name="Title" placeholder="Title">
+        </div>
+        
+        <div class="form-group">
+            <textarea class="form-control" id-"Desc" name="Desc" placeholder="Description of task"></textarea>
+        </div>
+
+        <div class="form-group">
+            Deadline:
+            <input class="form-control" type="datetime-local" id="Deadline" name="Deadline" min="{{time}}">
+        </div>
+
+        <div class="form-group">
+            <select class="form-control" id="Categories" name="Categories">
+                <option disabled selected value> -- Select an option -- </option>
+                <option value="Important"> Important </option>
+                <option value="High priority"> High priority </option>
+                <option value="Medium priority"> Medium priority </option>
+                <option value="Low priority"> Low priority </option>
+                <option value="General"> General </option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <div class="form-control">
+                <p> Status:
+                <input type="radio" id="Open" name="Status" value="True">
+                    <label for="Open"> Completed </label>
+                <input type="radio" id="Closed" name="Status" value="False">
+                    <label for="Closed"> Incomplete </label>
+                </p>
+            </div>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Create">
+    </form>
+
+{% endblock %}

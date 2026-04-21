@@ -1,0 +1,43 @@
+{% extends "TODO/layout.html" %}
+
+{% block title %} Your Tasks{% endblock %}
+
+{% block body %}
+    {% if Tasks%}
+        <div>
+            <table>
+                <tr style="width:100%;">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <td style="width:15%;">
+                        <label for="Search"><h2> Your Tasks </h2></label>
+                    </td>
+                    <td style="width:80%;">
+                        <select class="form-control" id="Search" name="Search">
+                            <option disabled selected value> -- Reorder tasks -- </option>
+                            <option value="deadline"> Deadline </option>
+                            <option value="Task_Flag"> Priority </option>
+                            <option value="start_time"> Date added </option>
+                        </select>
+                    </td>
+                    <td style="width:15%;">
+                        <input class="btn btn-primary" type="submit" value="Sort">
+                    </td>
+                </form>
+                </tr>
+            </table>
+        </div>
+        <hr>
+            {% for Task in Tasks%}
+                <form action="view_task" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" id="id" name="id" value="{{Task.pk}}">
+                    <input type="submit" class="btn btn-tertiary" value="• {{Task.Task_Title}}">
+                </form>
+                <hr>
+            {%endfor%}
+    {% else %}
+        <h2> No tasks! <a href="{% url 'create_task' %}"> Add one?</a> </h2>
+        <hr>
+    {% endif %}
+{% endblock %}

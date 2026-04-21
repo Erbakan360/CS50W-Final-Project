@@ -1,0 +1,66 @@
+{% extends "TODO/layout.html" %}
+
+{% block title %}
+    {% for Task in Tasks%}
+        Editing: {{Task.Task_Title}}
+    {% endfor %}
+{% endblock %}
+
+{% block body %}
+    {% for Task in Tasks%}
+        <h2>Edit <i class="heading">{{Task.Task_Title}}</i> </h2>
+        <hr>
+
+        {% if error %}
+            <div style="color:red;"> <h4>*{{ error }}*</h4> </div>
+        {% endif %}
+
+        <form action="save_edit" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="id" name="id" value="{{ Task.pk}}">
+
+            <div class="form-group">
+                <input class="form-control" autofocus type="text" id="Title" name="Title" value="{{Task.Task_Title}}">
+            </div>
+            
+            <div class="form-group">
+                <textarea class="form-control" id-"Desc" name="Desc">{{Task.Task_Content}}</textarea>
+            </div>
+
+            <div class="form-group">
+                <b style="color:Black;"> Previous Deadline : {{Task.deadline}} </b>
+                <input class="form-control" type="datetime-local" id="Deadline" name="Deadline">
+            </div>
+
+            <div class="form-group">
+                <b style="color:Black;"> Previous Flag : {{Task.Task_Flag}} </b>
+                <select class="form-control" id="Categories" name="Categories">
+                    <option disabled selected value> -- Select an option -- </option>
+                    <option value="Important"> Important </option>
+                    <option value="High priority"> High priority </option>
+                    <option value="Medium priority"> Medium priority </option>
+                    <option value="Low priority"> Low priority </option>
+                    <option value="General"> General </option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                {% if Task.Status == True %}
+                    <b style="color:Black;"> Previous Status : Complete </b>
+                {% else %}
+                    <b style="color:Black;"> Previous Status : Incomplete </b>
+                {% endif %}
+                <div class="form-control">
+                    <p> Status:
+                    <input type="radio" id="Open" name="Status" value="True">
+                        <label for="Open"> Completed </label>
+                    <input type="radio" id="Closed" name="Status" value="False">
+                        <label for="Closed"> Incomplete </label>
+                    </p>
+                </div>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Save Edit">
+        </form>
+
+    {% endfor %}
+{% endblock %}

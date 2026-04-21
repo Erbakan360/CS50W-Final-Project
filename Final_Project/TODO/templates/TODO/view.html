@@ -1,0 +1,72 @@
+{% extends "TODO/layout.html" %}
+
+{% block title %}
+    {% for Task in Tasks%}
+        {{Task.Task_Title}}
+    {% endfor %}
+{% endblock %}
+
+{% block body %}
+
+    {% for Task in Tasks%}
+        <div>
+            <table>
+                <tr width="100%">
+                    <td width="50%">
+                        <h2 class="heading">
+                                {{Task.Task_Title}}
+                        </h2>
+                    </td>
+                    <td width="15%">
+                        <u>{{Task.start_time}}</u>
+                    </td>
+                    <td>
+                        <form action="task_complete" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" id="id" name="id" value="{{Task.pk}}">
+                            {% if Task.Status == True %}
+                                <input class="btn btn-secondary" type="submit" id="button" value="Mark incomplete">
+                            {% else %}
+                                <input class="btn btn-success" type="submit" id="button" value="Mark complete">
+                            {% endif %}
+                        </form>
+                    </td>
+                    <td>
+                        <form action="edit_task" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" id="id" name="id" value="{{Task.pk}}">
+                            <input class="btn btn-info" type="submit" id="button" value="Edit Task">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="Copy_task" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" id="id" name="id" value="{{Task.pk}}">
+                            <input class="btn btn-primary" type="submit" id="button" value="Duplicate Task">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="remove_task" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" id="id" name="id" value="{{Task.pk}}">
+                            <input class="btn btn-danger" type="submit" id="button" value="Delete Task">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="form-control" style="background-color:#20809d; color:white;">
+            <b >{{Task.Task_Flag}}</b> | Deadline: <b> {{Task.deadline}} </b> |
+            {% if True == Task.Status %}
+                <i>Task <b style="color:#00ff2a;">Complete</b></i>
+            {% else %}
+                <i>Task <b>Incomplete</b></i>
+            {% endif %}
+        </div>
+        <hr>
+        <div>
+            <span style="white-space: pre-line"> {{Task.Task_Content}} </span>
+       </div>
+    {% endfor %}
+    <hr>
+{% endblock %}

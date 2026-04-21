@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'TODO/styles.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <div>
+            {% if user.is_authenticated %}
+                <div class="sidebar">
+                    <div>
+                        <a href="{% url 'index' %}"><h2>TODO</h2></a>
+                    </div>
+                    <div>
+                        <h4>{{user.username}}</h4>
+                    </div>
+                    <div>
+                        <a href="{% url 'complete_tasks' %}"> Completed Tasks </a>
+                    </div>                    
+                    <div>
+                        <a href="{% url 'create_task' %}">Create New Task</a>
+                    </div>
+                    <div>
+                        <a href="{% url 'logout' %}"> Log out </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="sidebar">
+                    <div>
+                        <a href="{% url 'index' %}"><h2>TODO</h2></a>
+                    </div>
+                    <hr>
+                    <div>
+                        <a href="{% url 'login' %}">Login</a>
+                    </div>
+                    <div>
+                        <a href="{% url 'register' %}">Register</a>
+                    </div>
+                </div>
+            {% endif %}
+                {% block nav %}
+                {% endblock %}
+        <div class="main">
+            {% block body %}
+            {% endblock %}
+        </div>
+        </div>
+
+    </body>
+</html>
